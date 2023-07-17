@@ -33,6 +33,22 @@ const insertMood = (date,time,mood,note) => {
       );
     });
   };
+
+  export const deleteMood = (moodId, callback) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'DELETE FROM mood WHERE id = ?',
+        [moodId],
+        (_, result) => {
+          callback(true); // Callback to indicate success
+        },
+        (_, error) => {
+          console.log('Error deleting mood:', error);
+          callback(false); // Callback to indicate failure
+        }
+      );
+    });
+  };
   
 
   export {createTable, insertMood,getMoods}

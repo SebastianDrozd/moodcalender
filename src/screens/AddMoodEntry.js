@@ -12,7 +12,10 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
 import { insertMood } from "../../database/tables";
 
-const AddMoodEntry = () => {
+const AddMoodEntry = ({navigation ,route}) => {
+  
+  const {setRefresh,refresh} = route.params;
+  console.log("refresh in addmood",refresh);
   const maximumDate = moment(currentDate).toDate();
   const [currentDate, setCurrentDate] = useState(new Date().toDateString()); // Add this
   const [currentTime, setCurrentTime] = useState(
@@ -59,7 +62,13 @@ const AddMoodEntry = () => {
     console.log(currentTime);
     console.log(selectedMood);
     console.log(description);
-    insertMood(currentDate,currentTime,selectedMood,description)
+    insertMood(currentDate,currentTime,selectedMood,description);
+    setRefresh(!refresh);
+    navigation.navigate({
+      name: 'Home',
+      params: { refresh: !refresh},
+      merge: true,
+    });
   };
   return (
     <View>

@@ -4,7 +4,11 @@ import axios from "axios";
 import TopDateBar from "../components/TopDateBar";
 import AddMood from "../components/AddMood";
 import MoodList from "../components/MoodList";
-const MainScreen = () => {
+import QuoteOfTheDay from "../components/QuoteOfTheDay";
+const MainScreen = ({navigation,route}) => {
+  const {refresh} = route.params;
+  console.log("these are params",route.params)
+  console.log("refresh",refresh);
   const [data, setData] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
@@ -25,19 +29,11 @@ const MainScreen = () => {
 
   return (
     <SafeAreaView style={styles.wrapper}>
-      <TopDateBar />
-      <View style={styles.headerContainer}>
-        <Text style={styles.header}>Quote of the day!</Text>
-        {data ? (
-          <Text style={styles.quote}>{data.quote_body}</Text>
-        ) : (
-          <Text>loading...</Text>
-        )}
-      </View>
+     <QuoteOfTheDay/>
       <View style={styles.addMod}>
         <AddMood />
       </View>
-      <MoodList/>
+      <MoodList refresh={refresh}/>
     </SafeAreaView>
   );
 };
@@ -48,7 +44,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
-    
   },
   headerContainer: {
     padding: 20,

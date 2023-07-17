@@ -5,20 +5,33 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SplashScreen from "./src/screens/SplashScreen";
 import AddMoodEntry from "./src/screens/AddMoodEntry";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createTable } from "./database/tables";
 
 const Stack = createStackNavigator();
 
 export default function App() {
-
+  const [refresh, setRefresh] = useState(false);
+  
   useEffect(() => {
     createTable();
   },[])
+  useEffect(() => {
+    
+  },[refresh])
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+       screenOptions={{
+        headerStyle: {
+          backgroundColor: '#A70FF0',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}>
         <Stack.Screen
           name="Splash"
           component={SplashScreen}
@@ -28,15 +41,16 @@ export default function App() {
           name="Home"
           component={MainScreen}
           options={{
+           
             headerLeft: null,
-            headerStatusBarHeight: 0,
-            header: () => null,
-            headerTransparent: true,
+      
           }}
+          initialParams={{ setRefresh, refresh }}
         />
         <Stack.Screen
           name="AddMoodEntry"
           component={AddMoodEntry}
+          initialParams={{ setRefresh, refresh }}
           />
       </Stack.Navigator>
     </NavigationContainer>
