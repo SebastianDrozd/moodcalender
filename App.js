@@ -5,10 +5,17 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SplashScreen from "./src/screens/SplashScreen";
 import AddMoodEntry from "./src/screens/AddMoodEntry";
+import { useEffect } from "react";
+import { createTable } from "./database/tables";
 
 const Stack = createStackNavigator();
 
 export default function App() {
+
+  useEffect(() => {
+    createTable();
+  },[])
+
   return (
     <NavigationContainer>
       <Stack.Navigator>

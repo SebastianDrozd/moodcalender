@@ -10,7 +10,8 @@ import {
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
-import SQLite from 'react-native-sqlite-storage';
+import { insertMood } from "../../database/tables";
+
 const AddMoodEntry = () => {
   const maximumDate = moment(currentDate).toDate();
   const [currentDate, setCurrentDate] = useState(new Date().toDateString()); // Add this
@@ -22,21 +23,6 @@ const AddMoodEntry = () => {
   const [displayTime, setDisplayTime] = useState(false);
   const [description, setDescription] = useState("");
 
-  const createTable = () => {
-    db.transaction(tx => {
-      tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS moods (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, time TEXT,mood TEXT, description TEXT)',
-        [],
-        () => {
-          console.log('Table created successfully');
-          insertData();
-        },
-        (_, error) => {
-          console.error('Failed to create table:', error);
-        }
-      );
-    });
-  };
 
   const hideDatePicker = () => {
     setDisplayCalendar(false);
@@ -73,6 +59,7 @@ const AddMoodEntry = () => {
     console.log(currentTime);
     console.log(selectedMood);
     console.log(description);
+    insertMood(currentDate,currentTime,selectedMood,description)
   };
   return (
     <View>
@@ -87,6 +74,7 @@ const AddMoodEntry = () => {
         isVisible={displayTime}
         mode="time"
         onConfirm={handleTimeConfirm}
+        onCancel={hideTimePicker}
       />
       <View>
         <Text style={styles.header}>How are you?</Text>
