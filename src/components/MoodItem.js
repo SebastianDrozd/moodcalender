@@ -3,7 +3,9 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import MoodOptionsModal from "./MoodOptionsModal";
 import { deleteMood } from "../../database/tables";
+import { useNavigation } from '@react-navigation/native';
 const MoodItem = ({ entry }) => {
+  const navigation = useNavigation();
   const { date, time, mood, note,id } = entry;
   const [moodPic, setMoodPic] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -42,6 +44,10 @@ const MoodItem = ({ entry }) => {
     setModalVisible(false);
   };
 
+  const handleEdit = () => {
+    navigation.navigate('EditMoodEntry',{mood: entry});
+  };
+
   return (
     <View style={styles.container}>
       <View>
@@ -70,6 +76,7 @@ const MoodItem = ({ entry }) => {
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onDelete={handleDelete}
+        onEdit={handleEdit}
         
       />
       </View>

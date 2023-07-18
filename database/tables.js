@@ -49,6 +49,23 @@ const insertMood = (date,time,mood,note) => {
       );
     });
   };
+
+  export const updateMood = (moodData, callback) => {
+  const { id, date, time, mood, note } = moodData;
+  db.transaction((tx) => {
+    tx.executeSql(
+      'UPDATE mood SET date = ?, time = ?, mood = ?, note = ? WHERE id = ?',
+      [date, time, mood, note, id],
+      (_, result) => {
+        callback(true); // Callback to indicate success
+      },
+      (_, error) => {
+        console.log('Error updating mood:', error);
+        callback(false); // Callback to indicate failure
+      }
+    );
+  });
+};
   
 
   export {createTable, insertMood,getMoods}

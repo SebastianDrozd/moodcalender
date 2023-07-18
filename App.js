@@ -7,6 +7,7 @@ import SplashScreen from "./src/screens/SplashScreen";
 import AddMoodEntry from "./src/screens/AddMoodEntry";
 import { useEffect, useState } from "react";
 import { createTable } from "./database/tables";
+import EditMoodScreen from "./src/screens/EditMoodScreen";
 
 const Stack = createStackNavigator();
 
@@ -51,6 +52,10 @@ export default function App() {
           name="AddMoodEntry"
           component={AddMoodEntry}
           initialParams={{ setRefresh, refresh }}
+          />
+          <Stack.Screen
+          name="EditMoodEntry"
+          component={EditMoodScreen}
           />
       </Stack.Navigator>
     </NavigationContainer>
