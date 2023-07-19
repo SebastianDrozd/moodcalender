@@ -15,7 +15,6 @@ import { insertMood } from "../../database/tables";
 const AddMoodEntry = ({navigation ,route}) => {
   
   const {setRefresh,refresh} = route.params;
-  console.log("refresh in addmood",refresh);
   const maximumDate = moment(currentDate).toDate();
   const [currentDate, setCurrentDate] = useState(new Date().toDateString()); // Add this
   const [currentTime, setCurrentTime] = useState(
@@ -71,161 +70,163 @@ const AddMoodEntry = ({navigation ,route}) => {
     });
   };
   return (
-    <View>
-      <DateTimePickerModal
-        isVisible={displayCalendar}
-        mode="date"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-        maximumDate={maximumDate}
-      />
-      <DateTimePickerModal
-        isVisible={displayTime}
-        mode="time"
-        onConfirm={handleTimeConfirm}
-        onCancel={hideTimePicker}
-      />
-      <View>
-        <Text style={styles.header}>How are you?</Text>
-      </View>
-      <View>
-        <View style={styles.dateTime}>
-          <Pressable onPress={showDatePicker}>
-            <Text style={styles.date}>{currentDate}</Text>
-          </Pressable>
-          <Pressable onPress={showTimePicker}>
-            <Text style={styles.date}>{currentTime}</Text>
-          </Pressable>
-        </View>
-      </View>
-      <View style={styles.moodIconRow}>
+    <View style={styles.container}>
+      <Text style={styles.title}>How are you feeling today?</Text>
+      <View style={styles.moodSelection}>
         <TouchableOpacity
-          onPress={() => handleMoodSelect("horrible")}
+          onPress={() => setSelectedMood("horrible")}
           style={selectedMood == "horrible" && styles.selected}
         >
-          <View style={styles.horrible}>
-            <Image
-              style={styles.iconImage}
-              source={require("../../assets/icons/5.png")}
-            />
-            <Text style={styles.iconSubText}>Horrible</Text>
-          </View>
+          <Image
+            style={styles.iconImage}
+            source={require("../../assets/icons/5.png")}
+          />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => handleMoodSelect("unhappy")}
-          style={selectedMood == "unhappy" && styles.selected}
+          onPress={() => setSelectedMood("bad")}
+          style={selectedMood == "bad" && styles.selected}
         >
-          <View style={styles.unhappy}>
-            <Image
-              style={styles.iconImage}
-              source={require("../../assets/icons/4.png")}
-            />
-            <Text style={styles.iconSubText}>Unhappy</Text>
-          </View>
+          <Image
+            style={styles.iconImage}
+            source={require("../../assets/icons/4.png")}
+          />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => handleMoodSelect("meh")}
+          onPress={() => setSelectedMood("meh")}
           style={selectedMood == "meh" && styles.selected}
         >
-          <View style={styles.meh}>
-            <Image
-              style={styles.iconImage}
-              source={require("../../assets/icons/3.png")}
-            />
-            <Text style={styles.iconSubText}>Meh</Text>
-          </View>
+          <Image
+            style={styles.iconImage}
+            source={require("../../assets/icons/3.png")}
+          />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => handleMoodSelect("decent")}
+          onPress={() => setSelectedMood("decent")}
           style={selectedMood == "decent" && styles.selected}
         >
-          <View style={styles.decent}>
-            <Image
-              style={styles.iconImage}
-              source={require("../../assets/icons/2.png")}
-            />
-            <Text style={styles.iconSubText}>Decent</Text>
-          </View>
+          <Image
+            style={styles.iconImage}
+            source={require("../../assets/icons/2.png")}
+          />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => handleMoodSelect("happy")}
+          onPress={() => setSelectedMood("happy")}
           style={selectedMood == "happy" && styles.selected}
         >
-          <View style={styles.happy}>
-            <Image
-              style={styles.iconImage}
-              source={require("../../assets/icons/1.png")}
-            />
-            <Text style={styles.iconSubText}>Happy</Text>
-          </View>
+          <Image
+            style={styles.iconImage}
+            source={require("../../assets/icons/1.png")}
+          />
         </TouchableOpacity>
       </View>
-      <View style={styles.textInputDiv}>
+      <View style={styles.dateTimeContainer}>
+        <View style={styles.dateTime}>
+          <TouchableOpacity onPress={showDatePicker}>
+            <Text style={styles.label}>{currentDate}</Text>
+            {/* Date picker component or other date selection mechanism */}
+            <DateTimePickerModal
+              isVisible={displayCalendar}
+              mode="date"
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
+              maximumDate={maximumDate}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.dateTime}>
+          <TouchableOpacity onPress={showTimePicker}>
+            <Text style={styles.label}>{currentTime}</Text>
+          </TouchableOpacity>
+          {/* Time picker component or other time selection mechanism */}
+          <DateTimePickerModal
+            isVisible={displayTime}
+            mode="time"
+            onConfirm={handleTimeConfirm}
+            onCancel={hideTimePicker}
+          />
+        </View>
+      </View>
+      <View style={styles.noteContainer}>
+        <Text style={styles.label}>Note</Text>
         <TextInput
-          style={styles.input}
-          placeholder="Add a note about your day!"
-          onChangeText={(newText) => {
-            setDescription(newText);
-          }}
+          style={styles.noteInput}
+          multiline
+          value={description}
+          onChangeText={setDescription}
+          placeholder="Write about your day..."
         />
       </View>
-      <View style={styles.submit}>
-        <Pressable style={styles.subPress} onPress={handleSubmit}>
-          <Text>Submit</Text>
-        </Pressable>
-      </View>
+      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+        <Text style={styles.submitButtonText}>Submit</Text>
+      </TouchableOpacity>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
-  header: {
-    fontSize: 28,
-    fontWeight: 700,
-    marginTop: 10,
+  container: {
+    flex: 1,
+    backgroundColor: "#ffffff",
+    padding: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#333333",
     textAlign: "center",
   },
+  moodSelection: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginBottom: 24,
+    marginTop: 16,
+  },
+  dateTimeContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginLeft: 50,
+    marginBottom: 16,
+  },
   dateTime: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    marginTop: 20,
+    flex: 1,
+    marginRight: 8,
   },
-  date: {
+  label: {
+    fontSize: 16,
+    color: "#666666",
+    marginBottom: 8,
+  },
+  noteContainer: {
+    marginBottom: 32,
+  },
+  noteInput: {
+    borderWidth: 1,
+    borderColor: "#dddddd",
+    borderRadius: 8,
+    padding: 12,
+    height: 120,
+  },
+  submitButton: {
+    backgroundColor: "#009688",
+    borderRadius: 10,
+    paddingVertical: 16,
+    alignItems: "center",
+  },
+  submitButtonText: {
     fontSize: 18,
-    fontWeight: 400,
-    textDecorationLine: "underline",
-  },
-  moodIconRow: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    marginTop: 20,
+    color: "#ffffff",
+    fontWeight: "bold",
   },
   iconImage: {
     width: 50,
     height: 50,
-  },
-  iconSubText: {
-    fontSize: 12,
-    fontWeight: 400,
-    textAlign: "center",
   },
   selected: {
     borderColor: "#50e0ff",
     borderWidth: 2,
     borderRadius: 10,
   },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-  },
-  submit: {
-    backgroundColor: "#50e0ff",
-    padding: 10,
-    borderRadius: 10,
-    marginTop: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
 });
+
 
 export default AddMoodEntry;

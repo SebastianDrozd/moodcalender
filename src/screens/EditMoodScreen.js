@@ -12,9 +12,11 @@ import { AntDesign } from "@expo/vector-icons"; // Import icons from 'expo/vecto
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
 import { updateMood } from "../../database/tables";
-const EditMoodScreen = () => {
-  const route = useRoute();
+const EditMoodScreen = ({navigation,route}) => {
+ 
   const { mood } = route.params;
+  console.log("this is route params",route.params)
+  const {setRefresh,refresh} = route.params;
   const [selectedMood, setSelectedMood] = useState(mood.mood);
   const [date, setDate] = useState(mood.date);
   const [time, setTime] = useState(mood.time);
@@ -65,6 +67,7 @@ const EditMoodScreen = () => {
     },(success) => {
         if(success){
             console.log("successfully updated mood")
+           navigation.goBack();
         }
         else{
             console.log("error updating mood")
@@ -189,6 +192,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     marginBottom: 16,
+    marginLeft: 50,
   },
   dateTime: {
     flex: 1,

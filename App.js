@@ -18,7 +18,7 @@ export default function App() {
     createTable();
   },[])
   useEffect(() => {
-    
+    console.log("refresh was updated")
   },[refresh])
 
   return (
@@ -26,7 +26,7 @@ export default function App() {
       <Stack.Navigator
        screenOptions={{
         headerStyle: {
-          backgroundColor: '#A70FF0',
+          backgroundColor: '#39D0E3',
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
@@ -56,6 +56,7 @@ export default function App() {
           <Stack.Screen
           name="EditMoodEntry"
           component={EditMoodScreen}
+          initialParams={{ setRefresh, refresh }}
           />
       </Stack.Navigator>
     </NavigationContainer>

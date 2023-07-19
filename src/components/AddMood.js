@@ -22,7 +22,7 @@ const AddMood = () => {
 
 const styles = StyleSheet.create({
     buttonContainer: {
-      backgroundColor: '#A70FF0',
+      backgroundColor: '#39D0E3',
       borderRadius: 10,
       paddingVertical: 12,
       paddingHorizontal: 24,

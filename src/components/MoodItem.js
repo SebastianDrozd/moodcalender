@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import MoodOptionsModal from "./MoodOptionsModal";
 import { deleteMood } from "../../database/tables";
 import { useNavigation } from '@react-navigation/native';
-const MoodItem = ({ entry }) => {
+const MoodItem = ({ entry,onMoodDeleted }) => {
   const navigation = useNavigation();
   const { date, time, mood, note,id } = entry;
   const [moodPic, setMoodPic] = useState(null);
@@ -16,7 +16,7 @@ const MoodItem = ({ entry }) => {
       setMoodPic(require("../../assets/icons/2.png"));
     } else if (mood === "meh") {
       setMoodPic(require("../../assets/icons/3.png"));
-    } else if (mood === "unhappy") {
+    } else if (mood === "bad") {
       setMoodPic(require("../../assets/icons/4.png"));
     } else if (mood === "horrible") {
       setMoodPic(require("../../assets/icons/5.png"));
@@ -34,6 +34,7 @@ const MoodItem = ({ entry }) => {
     deleteMood(id, (success) => {
       if (success) {
         console.log('Mood deleted successfully');
+        onMoodDeleted();
         // Perform any additional actions after successful deletion, if needed
       } else {
         console.log('Failed to delete mood');
@@ -51,7 +52,11 @@ const MoodItem = ({ entry }) => {
   return (
     <View style={styles.container}>
       <View>
-        <Image style={styles.iconImage} source={moodPic} />
+        {mood === "happy" && (<Image style={styles.iconImage} source={require("../../assets/icons/1.png")} />)}
+        {mood === "decent" && (<Image style={styles.iconImage} source={require("../../assets/icons/2.png")} />)}
+        {mood === "meh" && (<Image style={styles.iconImage} source={require("../../assets/icons/3.png")} />)}
+        {mood === "bad" && (<Image style={styles.iconImage} source={require("../../assets/icons/4.png")} />)}
+        {mood === "horrible" && (<Image style={styles.iconImage} source={require("../../assets/icons/5.png")} />)}
       </View>
       <View style={styles.content}>
         <View style={styles.header}>
